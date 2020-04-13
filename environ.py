@@ -4,8 +4,7 @@ from gym.utils import seeding
 from gym.envs.registration import EnvSpec
 import enum
 import numpy as np
-
-from . import data
+from data_io import *
 
 DEFAULT_BARS_COUNT = 10
 DEFAULT_COMMISSION_PERC = 0.1
@@ -34,7 +33,7 @@ class State:
         self.volumes = volumes
 
     def reset(self, prices, offset):
-        assert isinstance(prices, data.Prices)
+        assert isinstance(prices, Prices)
         assert offset >= self.bars_count-1
         self.have_position = False
         self.open_price = 0.0
@@ -207,9 +206,9 @@ class StocksEnv(gym.Env):
         return [seed1, seed2]
 
     @classmethod
-    def from_dir(cls, data_dir, **kwargs):
+    def from_dir(cls, data_paths, **kwargs):
         prices = {
-            file: data.load_relative(file)
-            for file in data.price_files(data_dir)
+            file: load_relative(file)
+            for file in price_files(data_paths)
         }
         return StocksEnv(prices, **kwargs)

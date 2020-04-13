@@ -44,3 +44,64 @@ class Duel_FC(nn.Module):
         adv = self.adv_net(x)
         out = value + (adv - adv.mean(dim=1, keepdims=True))
         return out
+
+
+class Conv_1D(nn.Module):
+    def __init__(self, input_shape, output_dim):
+        super(Conv_1D, self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv1d(input_shape[0], 128, 5),
+            nn.ReLU(),
+            nn.Conv1d(128, 128, 5),
+            nn.ReLU(),
+        )
+        conv_out_dim =   self._get_conv_out_dim(input_shape)
+        self.fc = nn.Sequential(
+            nn.Linear(conv_out_dim, 512),
+            nn.ReLU(),
+            nn.Linear(512, output_dim)
+        )
+
+    def _get_conv_out_dim(self, input_shape):
+        out = self.conv(torch.zeros(1, *input_shape))
+        return int(np.prod(out.shape))
+
+    def forward(self, x):
+        batch_size = x.shape[0]
+        conv_out = self.conv(x).view(batch_size,-1)
+        out = self.fc(conv_out)
+        return out
+
+
+class Duel_Conv_1D(nn.Module):
+    def __init__(self, input_shape, output_dim):
+        super(Conv_1D, self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv1d(input_shape[0], 128, 5),
+            nn.ReLU(),
+            nn.Conv1d(128, 128, 5),
+            nn.ReLU(),
+        )
+        conv_out_dim =   self._get_conv_out_dim(input_shape)
+        self.value_net = nn.Sequential(
+            nn.Linear(conv_out_dim, 512),
+            nn.ReLU(),
+            nn.Linear(512, 1)
+        )
+        self.adv_net = nn.Sequential(
+            nn.Linear(conv_out_dim, 512),
+            nn.ReLU(),
+            nn.Linear(512, output_dim)
+        )
+
+    def _get_conv_out_dim(self, input_shape):
+        out = self.conv(torch.zeros(1, *input_shape))
+        return int(np.prod(out.shape))
+
+    def forward(self, x):
+        batch_size = x.shape[0]
+        conv_out = self.conv(x).view(batch_size,-1)
+        value = self.value_net(conv_out)
+        adv = self.adv_net(conv_out)
+        out = value + (adv - adv.mean(dim=1, keepdims=True))
+        return out
