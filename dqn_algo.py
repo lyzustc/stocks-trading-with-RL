@@ -8,7 +8,7 @@ from collections import deque
 class DQNAlgo(object):
     def __init__(self, filepath, netname, algoname, eps_start=1.0, eps_end=0.1, eps_steps=1e6, discount=0.99, buffer_size=100000, batch_size=32, copy_times=1000):
         if netname == 'conv1d':
-            env = StocksEnv.from_dir(filepath, state_1d=True)
+            env = StocksEnv.from_dir([filepath], state_1d=True)
         else:
             env = StocksEnv.from_dir([filepath])
         self.env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)

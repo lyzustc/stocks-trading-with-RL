@@ -75,7 +75,7 @@ class Conv_1D(nn.Module):
 
 class Duel_Conv_1D(nn.Module):
     def __init__(self, input_shape, output_dim):
-        super(Conv_1D, self).__init__()
+        super(Duel_Conv_1D, self).__init__()
         self.conv = nn.Sequential(
             nn.Conv1d(input_shape[0], 128, 5),
             nn.ReLU(),
