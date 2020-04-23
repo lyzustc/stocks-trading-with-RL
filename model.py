@@ -6,6 +6,9 @@ import torch.nn.functional as F
 
 
 class FC(nn.Module):
+    """
+    3-layer fully connected network
+    """
     def __init__(self, input_dim, output_dim):
         super(FC, self).__init__()
         self.fc = nn.Sequential(
@@ -22,6 +25,9 @@ class FC(nn.Module):
 
 
 class Duel_FC(nn.Module):
+    """
+    3-layer fully connected network for dueling architecture
+    """
     def __init__(self, input_dim, output_dim):
         super(Duel_FC, self).__init__()
         self.value_net = nn.Sequential(
@@ -47,6 +53,9 @@ class Duel_FC(nn.Module):
 
 
 class Conv_1D(nn.Module):
+    """
+    4-layer 1D convolutional neural network
+    """
     def __init__(self, input_shape, output_dim):
         super(Conv_1D, self).__init__()
         self.conv = nn.Sequential(
@@ -74,6 +83,10 @@ class Conv_1D(nn.Module):
 
 
 class Duel_Conv_1D(nn.Module):
+    """
+    4-layer two-branch 1D convolutional neural network for dueling architecture,
+    the first two 1D convolutional layer are shared.
+    """
     def __init__(self, input_shape, output_dim):
         super(Duel_Conv_1D, self).__init__()
         self.conv = nn.Sequential(

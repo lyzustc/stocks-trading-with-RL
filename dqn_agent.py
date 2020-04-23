@@ -4,6 +4,9 @@ from model import *
 
 class DQNAgent(object):
     def __init__(self, net_name, state_shape, action_dim, initial_epsilon, discount):
+        """
+        DQNAgent --- Implementation of simple dqn agent
+        """
         assert isinstance(net_name, str) and net_name in ['fc', 'duel_fc', 'conv1d', 'duel_conv1d']
         assert isinstance(state_shape, int) or isinstance(state_shape, tuple)
         assert isinstance(action_dim, int)

@@ -7,6 +7,13 @@ from collections import deque
 
 class DQNAlgo(object):
     def __init__(self, filepath, netname, algoname, eps_start=1.0, eps_end=0.1, eps_steps=1e6, discount=0.99, buffer_size=100000, batch_size=32, copy_times=1000):
+        """
+        DQNAlgo --- Implementation of simple deep Q-learning architecture
+        setting parameters:
+            filepath -- the data file used to create stocks trading environment
+            netname -- 'fc' for fully connected network, 'conv1d' for 1D convolutional network
+            algoname -- '' for naive dqn, 'duel' for dueling dqn
+        """
         if netname == 'conv1d':
             env = StocksEnv.from_dir([filepath], state_1d=True)
         else:
